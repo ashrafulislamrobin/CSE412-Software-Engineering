@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Portfolio Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+
+        <h1>Dynamic Portfolio Generator</h1>
+
+    </header>
+
+    <section class="login-form">
+        <h2>Login to Create Portfolio</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section class="portfolio-form" style="display: none;">
+        <h2>Build Your Dynamic Portfolio</h2>
+        <form id="portfolioForm">
+            <div class="section personal-info">
+                <h3>Personal Information</h3>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Information:</label>
+                    <input type="text" id="contact" required>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Upload Photo (.jpg/.png):</label>
+                    <input type="file" id="photo" accept=".jpg,.png" required onchange="previewImage(event)">
+                    <img id="photoPreview" class="photo-preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Short Bio:</label>
+                    <textarea id="bio" rows="5" required></textarea>
+                </div>
+            </div>
+
+            <div class="section skills">
+                <h3>Skills</h3>
+                <div class="form-group">
+                    <label for="softSkills">Soft Skills:</label>
+                    <input type="text" id="softSkills" required>
+                </div>
+                <div class="form-group">
+                    <label for="technicalSkills">Technical Skills:</label>
+                    <input type="text" id="technicalSkills" required>
+                </div>
+            </div>
+
+            <div class="section academic-info optional">
+                <h3>Academic Background (Optional)</h3>
+                <div class="form-group">
+                    <label for="institute">Institute:</label>
+                    <input type="text" id="institute">
+                </div>
+                <div class="form-group">
+                    <label for="degree">Degree:</label>
+                    <input type="text" id="degree">
+                </div>
+                <div class="form-group">
+                    <label for="year">Year:</label>
+                    <input type="number" id="year">
+                </div>
+                <div class="form-group">
+                    <label for="grade">Grade:</label>
+                    <input type="text" id="grade">
+                </div>
+            </div>
+
+            <div class="section work-experience">
+                <h3>Work Experience</h3>
+                <div class="form-group">
+                    <label for="company">Company Name:</label>
+                    <input type="text" id="company" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Job Duration:</label>
+                    <input type="text" id="duration" required>
+                </div>
+                <div class="form-group">
+                    <label for="responsibilities">Job Responsibilities:</label>
+                    <textarea id="responsibilities" rows="5" required></textarea>
+                </div>
+            </div>
+
+            <div class="section projects optional">
+                <h3>Projects/Publications (Optional)</h3>
+                <div class="form-group">
+                    <label for="projects">Projects/Publications:</label>
+                    <textarea id="projects" rows="5"></textarea>
+                </div>
+            </div>
+
+            <button type="submit">Generate PDF & Save</button>
+        </form>
+    </section>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.querySelector('.login-form').style.display = 'none';
+            document.querySelector('.portfolio-form').style.display = 'block';
+        });
+
+        document.getElementById('portfolioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Portfolio generated and saved! (PDF generation and database storage to be implemented)');
+        });
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('photoPreview');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
