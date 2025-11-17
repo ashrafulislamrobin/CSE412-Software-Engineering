@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Portfolio Generator</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 
-    <!-- PDF Libraries -->
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -16,7 +19,7 @@
         <h1>Dynamic Portfolio Generator</h1>
     </header>
 
-    <!-- REGISTER SECTION -->
+    <!-- Register Section -->
     <section class="register-form" id="registerSection">
         <h2>Create Account</h2>
         <form id="registerForm">
@@ -26,14 +29,14 @@
             </div>
             <div class="form-group">
                 <label for="regPassword">Password:</label>
-                <input type="password" id="regPassword" required minlength="4">
+                <input type="password" id="regPassword" required minlength="6">
             </div>
             <button type="submit">Register</button>
             <p>Have account? <a href="#" id="goLogin">Login</a></p>
         </form>
     </section>
 
-    <!-- LOGIN SECTION -->
+    <!-- Login Section -->
     <section class="login-form" id="loginSection" style="display:none;">
         <h2>Login</h2>
         <form id="loginForm">
@@ -50,90 +53,43 @@
         </form>
     </section>
 
-    <!-- PORTFOLIO FORM -->
+    <!-- Portfolio Form -->
     <section class="portfolio-form" id="portfolioSection" style="display:none;">
         <h2>Build Your Portfolio</h2>
         <form id="portfolioForm">
-            <!-- Personal Info -->
             <div class="section personal-info">
                 <h3>Personal Information</h3>
-                <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" required>
-                </div>
-                <div class="form-group">
-                    <label for="contact">Contact:</label>
-                    <input type="text" id="contact" required>
-                </div>
-                <div class="form-group">
-                    <label for="photo">Photo:</label>
-                    <input type="file" id="photo" accept=".jpg,.png" onchange="previewImage(event)">
-                    <img id="photoPreview" class="photo-preview" style="display:none;">
-                </div>
-                <div class="form-group">
-                    <label for="bio">Bio:</label>
-                    <textarea id="bio" rows="5" required></textarea>
-                </div>
+                <div class="form-group"><label>Full Name:</label><input type="text" id="fullName"></div>
+                <div class="form-group"><label>Contact:</label><input type="text" id="contact"></div>
+                <div class="form-group"><label>Photo:</label><input type="file" id="photo" accept="image/*"></div>
+                <img id="photoPreview" class="photo-preview" style="display:none;">
+                <div class="form-group"><label>Bio:</label><textarea id="bio" rows="5"></textarea></div>
             </div>
 
-            <!-- Skills -->
             <div class="section skills">
                 <h3>Skills</h3>
-                <div class="form-group">
-                    <label for="softSkills">Soft Skills:</label>
-                    <input type="text" id="softSkills" required>
-                </div>
-                <div class="form-group">
-                    <label for="technicalSkills">Technical Skills:</label>
-                    <input type="text" id="technicalSkills" required>
-                </div>
+                <div class="form-group"><label>Soft Skills:</label><input type="text" id="softSkills"></div>
+                <div class="form-group"><label>Technical Skills:</label><input type="text" id="technicalSkills"></div>
             </div>
 
-            <!-- Academic -->
             <div class="section academic-info optional">
                 <h3>Academic (Optional)</h3>
-                <div class="form-group">
-                    <label for="institute">Institute:</label>
-                    <input type="text" id="institute">
-                </div>
-                <div class="form-group">
-                    <label for="degree">Degree:</label>
-                    <input type="text" id="degree">
-                </div>
-                <div class="form-group">
-                    <label for="year">Year:</label>
-                    <input type="number" id="year">
-                </div>
-                <div class="form-group">
-                    <label for="grade">Grade:</label>
-                    <input type="text" id="grade">
-                </div>
+                <div class="form-group"><label>Institute:</label><input type="text" id="institute"></div>
+                <div class="form-group"><label>Degree:</label><input type="text" id="degree"></div>
+                <div class="form-group"><label>Year:</label><input type="number" id="year"></div>
+                <div class="form-group"><label>Grade:</label><input type="text" id="grade"></div>
             </div>
 
-            <!-- Work Experience -->
             <div class="section work-experience">
                 <h3>Work Experience</h3>
-                <div class="form-group">
-                    <label for="company">Company:</label>
-                    <input type="text" id="company" required>
-                </div>
-                <div class="form-group">
-                    <label for="duration">Duration:</label>
-                    <input type="text" id="duration" required>
-                </div>
-                <div class="form-group">
-                    <label for="responsibilities">Responsibilities:</label>
-                    <textarea id="responsibilities" rows="5" required></textarea>
-                </div>
+                <div class="form-group"><label>Company:</label><input type="text" id="company"></div>
+                <div class="form-group"><label>Duration:</label><input type="text" id="duration"></div>
+                <div class="form-group"><label>Responsibilities:</label><textarea id="responsibilities" rows="5"></textarea></div>
             </div>
 
-            <!-- Projects -->
             <div class="section projects optional">
                 <h3>Projects (Optional)</h3>
-                <div class="form-group">
-                    <label for="projects">Projects:</label>
-                    <textarea id="projects" rows="5"></textarea>
-                </div>
+                <div class="form-group"><label>Projects:</label><textarea id="projects" rows="5"></textarea></div>
             </div>
 
             <div style="margin-top:20px; display:flex; gap:10px;">
@@ -144,8 +100,93 @@
         </form>
     </section>
 
-    <!-- Scripts -->
-    <script src="js/app.js"></script>
-    <script src="js/pdf.js"></script>
+    <script>
+        // Firebase Configuration
+        //I removed my config for security reasons.
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Navigation
+        document.getElementById('goLogin').onclick = e => { e.preventDefault(); showLogin(); };
+        document.getElementById('goRegister').onclick = e => { e.preventDefault(); showRegister(); };
+        document.getElementById('logoutBtn').onclick = () => { auth.signOut(); showLogin(); };
+
+        function showRegister() { document.getElementById('registerSection').style.display = 'block'; document.getElementById('loginSection').style.display = 'none'; document.getElementById('portfolioSection').style.display = 'none'; }
+        function showLogin() { document.getElementById('loginSection').style.display = 'block'; document.getElementById('registerSection').style.display = 'none'; document.getElementById('portfolioSection').style.display = 'none'; }
+        function showPortfolio() { document.getElementById('portfolioSection').style.display = 'block'; document.getElementById('loginSection').style.display = 'none'; document.getElementById('registerSection').style.display = 'none'; }
+
+        // Register
+        document.getElementById('registerForm').onsubmit = async e => {
+            e.preventDefault();
+            try {
+                await auth.createUserWithEmailAndPassword(document.getElementById('regEmail').value, document.getElementById('regPassword').value);
+                alert("Registered! Now login");
+                showLogin();
+            } catch (err) {
+                alert(err.code === 'auth/email-already-in-use' ? "Email already registered!" : "Error: " + err.message);
+            }
+        };
+
+        // Login
+        document.getElementById('loginForm').onsubmit = async e => {
+            e.preventDefault();
+            try {
+                await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('password').value);
+            } catch (err) {
+                alert("Wrong email or password!");
+            }
+        };
+
+        // Save & Load
+        document.getElementById('saveBtn').onclick = async () => {
+            if (!auth.currentUser) return alert("Login first!");
+            const data = {
+                fullName: get('fullName'), contact: get('contact'), bio: get('bio'),
+                photo: document.getElementById('photoPreview').src || '',
+                softSkills: get('softSkills'), technicalSkills: get('technicalSkills'),
+                institute: get('institute'), degree: get('degree'), year: get('year'), grade: get('grade'),
+                company: get('company'), duration: get('duration'), responsibilities: get('responsibilities'),
+                projects: get('projects')
+            };
+            await db.collection('portfolios').doc(auth.currentUser.uid).set(data);
+            alert("Saved to Database!");
+        };
+
+        function get(id) { return document.getElementById(id)?.value || ''; }
+
+        auth.onAuthStateChanged(async user => {
+            if (user) {
+                const doc = await db.collection('portfolios').doc(user.uid).get();
+                if (doc.exists) {
+                    const d = doc.data();
+                    Object.keys(d).forEach(k => {
+                        if (document.getElementById(k)) document.getElementById(k).value = d[k] || '';
+                        if (k === 'photo' && d.photo) {
+                            document.getElementById('photoPreview').src = d.photo;
+                            document.getElementById('photoPreview').style.display = 'block';
+                        }
+                    });
+                }
+                showPortfolio();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Photo Preview
+        document.getElementById('photo').onchange = e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('photoPreview').src = ev.target.result;
+                document.getElementById('photoPreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        };
+    </script>
+
+    <script src="pdf.js"></script>
 </body>
 </html>
